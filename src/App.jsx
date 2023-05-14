@@ -1,14 +1,18 @@
 import './App.css'
 import { Layout } from './components/Layout';
+import {useSelector} from 'react-redux'
 import LandingPage from './pages/LandingPage'
 import Register from './pages/Register/Register';
 import Login from './pages/login/Login'
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes,useNavigate } from "react-router-dom";
 import CreateUserPolling from './pages/create-user-polling/CreateUserPolling';
 import UserPollingList from './pages/user-polling-list/UserPollingList';
 
 
 function App() {
+  const navigate=useNavigate()
+
+  const {user}=useSelector(state=>state.auth)
   
 
   return (
@@ -19,7 +23,7 @@ function App() {
         <Route path="/" element={<LandingPage/>} />
 
        
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login />}/>
           <Route path="/register" element={<Register/>} />
         
 

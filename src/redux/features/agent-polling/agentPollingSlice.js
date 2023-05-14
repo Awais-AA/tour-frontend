@@ -3,7 +3,7 @@ import axios from '../../../axios/axios';
 
 
 const initialState={
-    userPoll:[],
+    agentPoll:[],
     isLoading:false,
     isError:false,
     isSuccess:false,
@@ -11,12 +11,12 @@ const initialState={
     successMessage:''
 }
 
-export const createUserPoll=createAsyncThunk('/user-poll',async(userPollData,thunkAPI)=>{
+export const createAgentPoll=createAsyncThunk('/agent-poll',async(PollData,thunkAPI)=>{
     
 
-       const URL = "/poll/";
+       const URL = "/travell-agent-poll/";
        try {
-           const res=await axios.post(URL,userPollData);
+           const res=await axios.post(URL,PollData);
            return res.data.success
            
        } catch (error) {
@@ -29,8 +29,8 @@ export const createUserPoll=createAsyncThunk('/user-poll',async(userPollData,thu
 })
 
 
-export const getUserPoll=createAsyncThunk('/user-poll-list',async(_,thunkAPI)=>{
-    const URL = "/all-poll";
+export const getAgentPoll=createAsyncThunk('/agent-poll-list',async(_,thunkAPI)=>{
+    const URL = "/travell-agent-poll/";
         try {
         const res=await axios.get(URL);
         return res.data
@@ -51,12 +51,12 @@ export const getUserPoll=createAsyncThunk('/user-poll-list',async(_,thunkAPI)=>{
 
 
 
-export const userPollingSlice =createSlice({
-    name:'userPolling',
+export const agentPollingSlice =createSlice({
+    name:'agentPolling',
     initialState,
     reducers:{
         reset:(state)=>{
-            state.userPoll=null
+            state.agentPoll=null
             state.isError=false
             state.isLoading=false
             state.isSuccess=false
@@ -67,42 +67,42 @@ export const userPollingSlice =createSlice({
     },
     extraReducers:(builder)=>{
         builder
-        .addCase(createUserPoll.pending,(state)=>{
+        .addCase(createAgentPoll.pending,(state)=>{
             state.isLoading=true
 
         })
-        .addCase(createUserPoll.fulfilled,(state,action)=>{
+        .addCase(createAgentPoll.fulfilled,(state,action)=>{
             state.isLoading=false
             state.isSuccess=true
             state.successMessage=action.payload
             
         })
-        .addCase(createUserPoll.rejected,(state,action)=>{
+        .addCase(createAgentPoll.rejected,(state,action)=>{
             state.isLoading=false
             state.isError=true
             state.errorMessage=action.payload
         })
 
-        .addCase(getUserPoll.pending,(state)=>{
+        .addCase(getAgentPoll.pending,(state)=>{
             state.isLoading=true
 
         })
-        .addCase(getUserPoll.fulfilled,(state,action)=>{
+        .addCase(getAgentPoll.fulfilled,(state,action)=>{
             state.isLoading=false
             state.isSuccess=true
             state.successMessage=''
-            state.userPoll=action.payload
+            state.agentPoll=action.payload
         })
-        .addCase(getUserPoll.rejected,(state,action)=>{
+        .addCase(getAgentPoll.rejected,(state,action)=>{
             state.isLoading=false
             state.isError=true
             state.errorMessage=action.payload
-            state.userPoll=null
+            state.agentPoll=null
         })
     }
 
     
 })
 
-export default userPollingSlice.reducer
-export const {reset}=userPollingSlice.actions
+export default agentPollingSlice.reducer
+export const {reset}=agentPollingSlice.actions

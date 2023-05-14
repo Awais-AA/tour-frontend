@@ -1,47 +1,59 @@
+import {Link} from "react-router-dom"
+
 import PollCard from "../../components/PollCard"
 import PollingPic from "../../components/PoolingPic"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { getUserPoll } from "../../redux/features/user-polling/userPollingSlice"
 
 const UserPollingList = () => {
+const {userPoll}=useSelector(state=>state.userPoll)
+console.log(userPoll);
+const dispatch=useDispatch()
+useEffect(()=>{
+  dispatch(getUserPoll())
+ 
+},[])
+
   return (
     <>
     <div className="container">
     <PollingPic/>
     </div>
-    <div class="container">
-      
-        <div class="row">
-          <div class="col-md-12">
+    <div className="container">
+        <div className="row">
+          <div className="col-md-12">
 
-            <div class="card card-nav-tabs">
-              <div class="card-header card-header-primary">
-                <div class="nav-tabs-navigation">
-                  <div class="nav-tabs-wrapper">
-                    <ul class="nav nav-tabs" data-tabs="tabs">
-                      <li class="nav-item">
+            <div className="card card-nav-tabs">
+              <div className="card-header card-header-primary">
+                <div className="nav-tabs-navigation">
+                  <div className="nav-tabs-wrapper">
+                    <ul className="nav nav-tabs" data-tabs="tabs">
+                      <li className="nav-item">
                        
-                        <a
-                          class="nav-link"
-                          href="/user-polling"
+                      <Link
+                          className="nav-link"
+                          to="/user-polling"
                           data-toggle="tab"
                         >
                           
                           Create Poll
-                        </a>
+                        </Link>
                       </li>
-                      <li class="nav-item">
-                        <a class="nav-link active" href="/user-polling-list" data-toggle="tab">
+                      <li className="nav-item">
+                      <Link className="nav-link active" to="/user-polling-list" data-toggle="tab">
                           
                           User Polling List
-                        </a>
+                          </Link>
                       </li>
                      
                     </ul>
                   </div>
                 </div>
               </div>
-              <div class="card-body ">
-                <div class="tab-content text-center">
-                  <PollCard componentvalue="User Polling List"/>
+              <div className="card-body ">
+                <div className="tab-content text-center">
+                  <PollCard componentvalue="User Polling List" userPoll={userPoll}/>
                 </div>
               </div>
             </div>

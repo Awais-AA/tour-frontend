@@ -1,3 +1,5 @@
+import {Link,useNavigate} from "react-router-dom"
+
 import PoolingPic from '../../components/PoolingPic'
 import "./PoolingPage.css"
 import PoolingMap from './components/PoolingMap'
@@ -19,20 +21,20 @@ function CreateUserPolling() {
                     <ul class="nav nav-tabs" data-tabs="tabs">
                       <li class="nav-item">
                        
-                        <a
+                        <Link
                           class="nav-link active"
-                          href="/user-polling"
+                          to="/user-polling"
                           data-toggle="tab"
                         >
                           
                           Create Poll
-                        </a>
+                        </Link>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="/user-polling-list" data-toggle="tab">
+                        <Link class="nav-link" to="/user-polling-list" data-toggle="tab">
                           
                         User Polling List
-                        </a>
+                        </Link>
                       </li>
                      
                     </ul>
@@ -42,10 +44,6 @@ function CreateUserPolling() {
               <div class="card-body ">
                 <div class="tab-content text-center">
                   <div class="tab-pane active" id="profile">
-                  <PoolingMap/>
-                  </div>
-               
-                  <div class="tab-pane" id="settings">
                   <PoolingMap/>
                   </div>
                 </div>

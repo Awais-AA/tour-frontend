@@ -2,33 +2,43 @@ import LoginPic from "../../assets/images/LoginPic.jpg"
 import { useState,useEffect } from 'react'
 import {useDispatch,useSelector} from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import {login} from '../../redux/features/auth/authSlice'
+import {login,resetStatus} from '../../redux/features/auth/authSlice'
 
 
 function Login() {
-    const [user, setUser]= useState({
+    const [userData, setUserData]= useState({
         email:"",
         password:"",
        });
        const navigate=useNavigate()
        const dispatch=useDispatch()
-       const {userdata,isLoading,isError,isSuccess,message}=useSelector(state=>state.auth)
-       console.log(isSuccess,isError,userdata,message,userdata);
+       const {user,errorMessage}=useSelector(state=>state.auth)
        
        useEffect(()=>{
         
        },[])
         const onchange=(e)=>{
-          setUser((prevState)=>({...prevState,[e.target.name]:e.target.value}))
+          setUserData((prevState)=>({...prevState,[e.target.name]:e.target.value}))
           
     
         }
     
       
-      const submitHandler=(e)=>{
+      const submitHandler=async(e)=>{
         e.preventDefault();
-        dispatch(login(user))
-        setUser({email:"",password:""})
+        const res=await dispatch(login(userData))
+        if(res.type==='/login/fulfilled'){
+         console.log(user);
+         dispatch(resetStatus());
+         navigate("/")
+       }
+       else if(res.type==='/login/rejected'){
+         console.log(errorMessage);
+         dispatch(resetStatus());
+       }
+     
+     
+        setUserData({email:"",password:""})
        
         
     
@@ -57,8 +67,8 @@ function Login() {
                                         <h4 className="text-dark mb-4">Welcome Back!</h4>
                                     </div>
                                     <form className="user" onSubmit={submitHandler}>
-                                        <div className="mb-3"><input id="exampleInputEmail" className="form-control form-control-user" type="email" aria-describedby="emailHelp" placeholder="Enter Email Address..." name="email" value={user.email} onChange={onchange}/></div>
-                                        <div className="mb-3"><input id="exampleInputPassword" className="form-control form-control-user" type="password" placeholder="Password" name="password" value={user.password} onChange={onchange}/></div>
+                                        <div className="mb-3"><input id="exampleInputEmail" className="form-control form-control-user" type="email" aria-describedby="emailHelp" placeholder="Enter Email Address..." name="email" value={userData.email} onChange={onchange}/></div>
+                                        <div className="mb-3"><input id="exampleInputPassword" className="form-control form-control-user" type="password" placeholder="Password" name="password" value={userData.password} onChange={onchange}/></div>
                                         <div className="mb-3">
                                             <div className="custom-control custom-checkbox small">
                                                 <div className="form-check"><input id="formCheck-1" className="form-check-input custom-control-input" type="checkbox" /><label className="form-check-label custom-control-label" htmlFor="formCheck-1">Remember Me</label></div>

@@ -3,7 +3,7 @@ import axios from '../../../axios/axios';
 
 
 const initialState={
-    userPoll:[],
+    groupPoll:[],
     isLoading:false,
     isError:false,
     isSuccess:false,
@@ -11,10 +11,10 @@ const initialState={
     successMessage:''
 }
 
-export const createUserPoll=createAsyncThunk('/user-poll',async(userPollData,thunkAPI)=>{
+export const createGroupPoll=createAsyncThunk('/group-poll',async(userPollData,thunkAPI)=>{
     
 
-       const URL = "/poll/";
+       const URL = "/group-tour/";
        try {
            const res=await axios.post(URL,userPollData);
            return res.data.success
@@ -29,8 +29,8 @@ export const createUserPoll=createAsyncThunk('/user-poll',async(userPollData,thu
 })
 
 
-export const getUserPoll=createAsyncThunk('/user-poll-list',async(_,thunkAPI)=>{
-    const URL = "/all-poll";
+export const getGroupPoll=createAsyncThunk('/group-poll-list',async(_,thunkAPI)=>{
+    const URL = "/group-tour/";
         try {
         const res=await axios.get(URL);
         return res.data
@@ -51,12 +51,12 @@ export const getUserPoll=createAsyncThunk('/user-poll-list',async(_,thunkAPI)=>{
 
 
 
-export const userPollingSlice =createSlice({
-    name:'userPolling',
+export const groupPollingSlice =createSlice({
+    name:'groupPolling',
     initialState,
     reducers:{
         reset:(state)=>{
-            state.userPoll=null
+            state.groupPoll=null
             state.isError=false
             state.isLoading=false
             state.isSuccess=false
@@ -67,42 +67,42 @@ export const userPollingSlice =createSlice({
     },
     extraReducers:(builder)=>{
         builder
-        .addCase(createUserPoll.pending,(state)=>{
+        .addCase(createGroupPoll.pending,(state)=>{
             state.isLoading=true
 
         })
-        .addCase(createUserPoll.fulfilled,(state,action)=>{
+        .addCase(createGroupPoll.fulfilled,(state,action)=>{
             state.isLoading=false
             state.isSuccess=true
             state.successMessage=action.payload
             
         })
-        .addCase(createUserPoll.rejected,(state,action)=>{
+        .addCase(createGroupPoll.rejected,(state,action)=>{
             state.isLoading=false
             state.isError=true
             state.errorMessage=action.payload
         })
 
-        .addCase(getUserPoll.pending,(state)=>{
+        .addCase(getGroupPoll.pending,(state)=>{
             state.isLoading=true
 
         })
-        .addCase(getUserPoll.fulfilled,(state,action)=>{
+        .addCase(getGroupPoll.fulfilled,(state,action)=>{
             state.isLoading=false
             state.isSuccess=true
             state.successMessage=''
-            state.userPoll=action.payload
+            state.groupPoll=action.payload
         })
-        .addCase(getUserPoll.rejected,(state,action)=>{
+        .addCase(getGroupPoll.rejected,(state,action)=>{
             state.isLoading=false
             state.isError=true
             state.errorMessage=action.payload
-            state.userPoll=null
+            state.groupPoll=null
         })
     }
 
     
 })
 
-export default userPollingSlice.reducer
-export const {reset}=userPollingSlice.actions
+export default groupPollingSlice.reducer
+export const {reset}=groupPollingSlice.actions

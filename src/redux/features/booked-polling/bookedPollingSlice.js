@@ -3,7 +3,7 @@ import axios from '../../../axios/axios';
 
 
 const initialState={
-    userPoll:[],
+    bookedPoll:[],
     isLoading:false,
     isError:false,
     isSuccess:false,
@@ -11,10 +11,10 @@ const initialState={
     successMessage:''
 }
 
-export const createUserPoll=createAsyncThunk('/user-poll',async(userPollData,thunkAPI)=>{
+export const createBookedPoll=createAsyncThunk('/booked-poll',async(userPollData,thunkAPI)=>{
     
 
-       const URL = "/poll/";
+       const URL = "/booking-poll/";
        try {
            const res=await axios.post(URL,userPollData);
            return res.data.success
@@ -29,8 +29,8 @@ export const createUserPoll=createAsyncThunk('/user-poll',async(userPollData,thu
 })
 
 
-export const getUserPoll=createAsyncThunk('/user-poll-list',async(_,thunkAPI)=>{
-    const URL = "/all-poll";
+export const getBookedPoll=createAsyncThunk('/booked-poll-list',async(_,thunkAPI)=>{
+    const URL = "/booking-poll/";
         try {
         const res=await axios.get(URL);
         return res.data
@@ -51,12 +51,12 @@ export const getUserPoll=createAsyncThunk('/user-poll-list',async(_,thunkAPI)=>{
 
 
 
-export const userPollingSlice =createSlice({
-    name:'userPolling',
+export const bookedPollingSlice =createSlice({
+    name:'bookedPolling',
     initialState,
     reducers:{
         reset:(state)=>{
-            state.userPoll=null
+            state.bookedPoll=null
             state.isError=false
             state.isLoading=false
             state.isSuccess=false
@@ -67,42 +67,42 @@ export const userPollingSlice =createSlice({
     },
     extraReducers:(builder)=>{
         builder
-        .addCase(createUserPoll.pending,(state)=>{
+        .addCase(createBookedPoll.pending,(state)=>{
             state.isLoading=true
 
         })
-        .addCase(createUserPoll.fulfilled,(state,action)=>{
+        .addCase(createBookedPoll.fulfilled,(state,action)=>{
             state.isLoading=false
             state.isSuccess=true
             state.successMessage=action.payload
             
         })
-        .addCase(createUserPoll.rejected,(state,action)=>{
+        .addCase(createBookedPoll.rejected,(state,action)=>{
             state.isLoading=false
             state.isError=true
             state.errorMessage=action.payload
         })
 
-        .addCase(getUserPoll.pending,(state)=>{
+        .addCase(getBookedPoll.pending,(state)=>{
             state.isLoading=true
 
         })
-        .addCase(getUserPoll.fulfilled,(state,action)=>{
+        .addCase(getBookedPoll.fulfilled,(state,action)=>{
             state.isLoading=false
             state.isSuccess=true
             state.successMessage=''
-            state.userPoll=action.payload
+            state.bookedPoll=action.payload
         })
-        .addCase(getUserPoll.rejected,(state,action)=>{
+        .addCase(getBookedPoll.rejected,(state,action)=>{
             state.isLoading=false
             state.isError=true
             state.errorMessage=action.payload
-            state.userPoll=null
+            state.bookedPoll=null
         })
     }
 
     
 })
 
-export default userPollingSlice.reducer
-export const {reset}=userPollingSlice.actions
+export default bookedPollingSlice.reducer
+export const {reset}=bookedPollingSlice.actions

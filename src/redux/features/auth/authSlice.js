@@ -14,39 +14,32 @@ const initialState={
 export const register=createAsyncThunk('/register',async(userData,thunkAPI)=>{
     
     const URL = "/register/";
-    console.log(userData);
-
-    const[res,err] = await axios.post(URL,userData);
-  
-
-    console.log(res);
-
-       if(res) return res.data
-
-        if(err){ 
+ try {
+        const res=await axios.post(URL,userData);
+        return res.data.success
         
-        return thunkAPI.rejectWithValue(err)
-       } 
+    } catch (error) {
+        const message=( error.response?.data?.message) || error.message|| error.toString()
+        return thunkAPI.rejectWithValue(message)
+        
+    }
 
         
     
 })
 
 
-export const login=createAsyncThunk('auth/login',async(userData,thunkAPI)=>{
-    const URL = "/register/";
-    console.log(userData);
-    const[res,err] = await axios.post(URL,userData);
-  
-
-
-       if(res) return res.data
-
-        if(err){ 
-        console.log(err);
+export const login=createAsyncThunk('/login',async(userData,thunkAPI)=>{
+    const URL = "/login/";
+    try {
+        const res=await axios.post(URL,userData);
+        return res.data
         
-        return thunkAPI.rejectWithValue(err)
-       }
+    } catch (error) {
+        const message=( error.response?.data?.message) || error.message|| error.toString()
+        return thunkAPI.rejectWithValue(message)
+        
+    }
 
 })
 
@@ -81,7 +74,14 @@ export const authSlice =createSlice({
     name:'auth',
     initialState,
     reducers:{
-        reset:(state)=>{
+        resetStatus:(state)=>{
+            state.isError=false
+            state.isLoading=false
+            state.isSuccess=false
+            state.errorMessage=''
+            state.successMessage=''
+        },
+        resetState:(state)=>{
             state.user=null
             state.isError=false
             state.isLoading=false
@@ -105,7 +105,8 @@ export const authSlice =createSlice({
         .addCase(register.rejected,(state,action)=>{
             state.isLoading=false
             state.isError=true
-            state.message=action.payload
+            state.successMessage=''
+            state.errorMessage=action.payload
             state.user=null
         })
 
@@ -121,7 +122,7 @@ export const authSlice =createSlice({
         .addCase(login.rejected,(state,action)=>{
             state.isLoading=false
             state.isError=true
-            state.message=action.payload
+            state.errorMessage=action.payload
             state.user=null
         })
 
@@ -168,4 +169,4 @@ export const authSlice =createSlice({
 })
 
 export default authSlice.reducer
-export const {reset}=authSlice.actions
+export const {resetState,resetStatus}=authSlice.actions

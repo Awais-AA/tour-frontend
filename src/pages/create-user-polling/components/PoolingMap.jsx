@@ -14,7 +14,6 @@ const PoolingMap = () => {
     endDate:"",
 
    });
-   console.log(userPoll);
 
    const dispatch=useDispatch(createUserPoll(userPoll))
 
